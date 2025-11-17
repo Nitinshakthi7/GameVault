@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="View your personal game collection">
+    <title>My Collection - GameVault</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/css/main.css">
+    <link rel="stylesheet" href="./assets/css/components.css">
+</head>
+<body class="protected-page">
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-dark">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="./view-games.html" style="display: flex; align-items: center; text-decoration: none; color: inherit;">
+                    <span class="logo-icon">🎮</span>
+                    <span class="logo-text">GameVault</span>
+                </a>
+            </div>
+            <div class="nav-links" id="navLinks">
+                <a href="./view-games.html" class="nav-link">All Games</a>
+                <a href="./my-collection.html" class="nav-link active">My Collection</a>
+                <a href="./my-wishlist.html" class="nav-link">Wishlist</a>
+                <a href="./add-game.html" class="nav-link">Add Game</a>
+                <button class="btn btn-logout" id="logoutBtn">Logout</button>
+            </div>
+            <button class="nav-toggle" id="navToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- My Collection -->
+    <main class="main-content">
+        <div class="page-container-wide">
+            <div class="page-header">
+                <h1 class="page-title">My Collection</h1>
+                <p class="page-subtitle">Games you own and love</p>
+            </div>
+
+            <!-- Collection Stats -->
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-icon">📚</div>
+                    <div class="stat-content">
+                        <p class="stat-label">Total Games</p>
+                        <p class="stat-value" id="totalGames">0</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⭐</div>
+                    <div class="stat-content">
+                        <p class="stat-label">Average Rating</p>
+                        <p class="stat-value" id="avgRating">0.0</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading State -->
+            <div id="loadingState" class="loading-state">
+                <div class="spinner"></div>
+                <p>Loading your collection...</p>
+            </div>
+
+            <!-- Collection Grid -->
+            <div id="collectionGrid" class="games-grid" style="display: none;">
+                <!-- Game cards will be dynamically inserted here -->
+            </div>
+
+            <!-- Empty State -->
+            <div id="emptyState" class="empty-state" style="display: none;">
+                <div class="empty-icon">📚</div>
+                <h3>Your Collection is Empty</h3>
+                <p>Start building your library by adding games to your collection</p>
+                <a href="./view-games.html" class="btn btn-primary">Browse Games</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <span class="logo-icon">🎮</span>
+                    <span class="logo-text">GameVault</span>
+                </div>
+                <p class="footer-text">© 2025 GameVault. Built for gamers, by gamers.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="./assets/js/api.js"></script>
+    <script src="./assets/js/auth.js"></script>
+    <script src="./assets/js/collection.js"></script>
+    <script src="./assets/js/ui.js"></script>
+</body>
+</html>

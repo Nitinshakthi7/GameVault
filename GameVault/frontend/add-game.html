@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Add a new game to your GameVault library">
+    <title>Add Game - GameVault</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/css/main.css">
+    <link rel="stylesheet" href="./assets/css/components.css">
+</head>
+<body class="protected-page">
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-dark">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="./view-games.html" style="display: flex; align-items: center; text-decoration: none; color: inherit;">
+                    <span class="logo-icon">🎮</span>
+                    <span class="logo-text">GameVault</span>
+                </a>
+            </div>
+            <div class="nav-links" id="navLinks">
+                <a href="./view-games.html" class="nav-link">All Games</a>
+                <a href="./my-collection.html" class="nav-link">My Collection</a>
+                <a href="./my-wishlist.html" class="nav-link">Wishlist</a>
+                <a href="./add-game.html" class="nav-link active">Add Game</a>
+                <button class="btn btn-logout" id="logoutBtn">Logout</button>
+            </div>
+            <button class="nav-toggle" id="navToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Add Game Form -->
+    <main class="main-content">
+        <div class="page-container">
+            <div class="page-header">
+                <h1 class="page-title">Add New Game</h1>
+                <p class="page-subtitle">Share a game with the GameVault community</p>
+            </div>
+
+            <div class="form-card">
+                <form id="addGameForm" class="game-form" novalidate>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="title" class="form-label">Game Title <span class="required">*</span></label>
+                            <input 
+                                type="text" 
+                                id="title" 
+                                name="title" 
+                                class="form-input" 
+                                placeholder="Enter game title"
+                                required
+                                maxlength="100"
+                            >
+                            <span class="error-message"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-row form-row-2">
+                        <div class="form-group">
+                            <label for="platform" class="form-label">Platform <span class="required">*</span></label>
+                            <select id="platform" name="platform" class="form-select" required>
+                                <option value="">Select platform</option>
+                                <option value="PC">PC</option>
+                                <option value="PlayStation">PlayStation</option>
+                                <option value="Xbox">Xbox</option>
+                                <option value="Nintendo Switch">Nintendo Switch</option>
+                                <option value="Multi-platform">Multi-platform</option>
+                            </select>
+                            <span class="error-message"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="genre" class="form-label">Genre <span class="required">*</span></label>
+                            <select id="genre" name="genre" class="form-select" required>
+                                <option value="">Select genre</option>
+                                <option value="RPG">RPG</option>
+                                <option value="FPS">FPS</option>
+                                <option value="Strategy">Strategy</option>
+                                <option value="Racing">Racing</option>
+                                <option value="Adventure">Adventure</option>
+                                <option value="Sports">Sports</option>
+                                <option value="Puzzle">Puzzle</option>
+                                <option value="Simulation">Simulation</option>
+                                <option value="Horror">Horror</option>
+                                <option value="Fighting">Fighting</option>
+                                <option value="Action">Action</option>
+                            </select>
+                            <span class="error-message"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-row form-row-2">
+                        <div class="form-group">
+                            <label for="year" class="form-label">Release Year <span class="required">*</span></label>
+                            <input 
+                                type="number" 
+                                id="year" 
+                                name="year" 
+                                class="form-input" 
+                                placeholder="e.g., 2024"
+                                required
+                                min="1980"
+                                max="2025"
+                            >
+                            <span class="error-message"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="rating" class="form-label">Rating <span class="required">*</span></label>
+                            <input 
+                                type="number" 
+                                id="rating" 
+                                name="rating" 
+                                class="form-input" 
+                                placeholder="0.0 - 5.0"
+                                required
+                                min="0"
+                                max="5"
+                                step="0.1"
+                            >
+                            <span class="error-message"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-row form-row-2">
+                        <div class="form-group">
+                            <label for="developer" class="form-label">Developer</label>
+                            <input 
+                                type="text" 
+                                id="developer" 
+                                name="developer" 
+                                class="form-input" 
+                                placeholder="Enter developer name"
+                                maxlength="100"
+                            >
+                            <span class="error-message"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="publisher" class="form-label">Publisher</label>
+                            <input 
+                                type="text" 
+                                id="publisher" 
+                                name="publisher" 
+                                class="form-input" 
+                                placeholder="Enter publisher name"
+                                maxlength="100"
+                            >
+                            <span class="error-message"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="posterUrl" class="form-label">Poster URL</label>
+                            <input
+                                type="url"
+                                id="posterUrl"
+                                name="posterUrl"
+                                class="form-input"
+                                placeholder="Paste a link to the game poster image (optional)"
+                                maxlength="300"
+                            >
+                            <span class="error-message"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="description" class="form-label">Description <span class="required">*</span></label>
+                            <textarea 
+                                id="description" 
+                                name="description" 
+                                class="form-textarea" 
+                                placeholder="Write a brief description of the game"
+                                required
+                                rows="5"
+                                maxlength="500"
+                            ></textarea>
+                            <span class="error-message"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary" id="submitBtn">
+                            Add Game
+                        </button>
+                        <a href="./view-games.html" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <span class="logo-icon">🎮</span>
+                    <span class="logo-text">GameVault</span>
+                </div>
+                <p class="footer-text">© 2025 GameVault. Built for gamers, by gamers.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="./assets/js/api.js"></script>
+    <script src="./assets/js/auth.js"></script>
+    <script src="./assets/js/games.js"></script>
+    <script src="./assets/js/ui.js"></script>
+</body>
+</html>
