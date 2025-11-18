@@ -8,8 +8,6 @@ GameVault is a simple full-stack web app that lets users manage a personal game 
 - Maintain a personal **collection** (owned games) and **wishlist**.
 - Interact with the same API using **Postman**, including adding many games at once.
 
-The backend is intentionally kept **beginner-friendly and straightforward** (single `server.js`, routes, and models), while the frontend uses more advanced UI and UX.
-
 ---
 
 ## 1. Project Structure
