@@ -19,12 +19,12 @@ const router = express.Router();
 // ========================================
 
 // @route   GET /api/games
-// @desc    Get all games
+// @desc    Get all games added by the currently logged-in user
 // @access  Protected
 router.get('/', protect, async (req, res) => {
     try {
-        // Find all games and populate addedBy field with username
-        const games = await Game.find()
+        // Find games where addedBy is the current user and populate addedBy field with username
+        const games = await Game.find({ addedBy: req.user._id })
             .populate('addedBy', 'username')
             .sort({ createdAt: -1 }); // Sort by newest first
         
@@ -35,10 +35,10 @@ router.get('/', protect, async (req, res) => {
         });
         
     } catch (error) {
-        console.error('Get All Games Error:', error.message);
+        console.error('Get User Games Error:', error.message);
         res.status(500).json({
             success: false,
-            message: 'Failed to fetch games'
+            message: 'Failed to fetch games for this user'
         });
     }
 });
