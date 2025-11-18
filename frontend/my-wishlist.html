@@ -74,9 +74,18 @@
                 <a href="./view-games.html" class="btn btn-primary">Browse Games</a>
             </div>
         </div>
-    </main>
+        </main>
 
-    <!-- Footer -->
+        <!-- Game Detail Overlay (Netflix-style expanded view) -->
+        <div id="gameDetailOverlay" class="game-detail-overlay" style="display: none;">
+            <div class="game-detail-backdrop" id="gameDetailBackdrop"></div>
+            <div class="game-detail-content" id="gameDetailContent">
+                <button class="game-detail-close" id="gameDetailClose">&times;</button>
+                <!-- Content is filled dynamically from games.js / wishlist.js -->
+            </div>
+        </div>
+
+        <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <div class="footer-content">

@@ -4,6 +4,70 @@
  */
 
 if (document.getElementById('wishlistGrid')) {
+    // Detail overlay elements (shared with All Games view)
+    const detailOverlay = document.getElementById('gameDetailOverlay');
+    const detailBackdrop = document.getElementById('gameDetailBackdrop');
+    const detailContent = document.getElementById('gameDetailContent');
+
+    function closeDetail() {
+        if (!detailOverlay || !detailContent) return;
+        detailOverlay.style.display = 'none';
+        detailContent.classList.remove('open');
+    }
+
+    if (detailOverlay && detailBackdrop && detailContent) {
+        const initialClose = document.getElementById('gameDetailClose');
+        if (initialClose) {
+            initialClose.addEventListener('click', closeDetail);
+        }
+
+        detailBackdrop.addEventListener('click', closeDetail);
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && detailOverlay.style.display === 'flex') {
+                closeDetail();
+            }
+        });
+    }
+
+    function openGameDetail(game) {
+        if (!detailOverlay || !detailContent) return;
+
+        const posterUrl = game.posterUrl || '';
+
+        detailContent.innerHTML = `
+            <button class="game-detail-close" id="gameDetailClose">&times;</button>
+            <div class="game-detail-poster">
+                ${posterUrl ? `<img src="${posterUrl}" alt="${game.title} poster" />` : ''}
+            </div>
+            <div class="game-detail-info">
+                <h2 class="game-detail-title">${game.title}</h2>
+                <div class="game-detail-meta">
+                    <span><strong>Platform:</strong> ${game.platform}</span>
+                    <span><strong>Genre:</strong> ${game.genre}</span>
+                    <span><strong>Year:</strong> ${game.year}</span>
+                    <span><strong>Rating:</strong> ${game.rating.toFixed(1)} / 5 (${generateStars(game.rating)})</span>
+                    ${game.developer ? `<span><strong>Developer:</strong> ${game.developer}</span>` : ''}
+                    ${game.publisher ? `<span><strong>Publisher:</strong> ${game.publisher}</span>` : ''}
+                    <span><strong>Added by:</strong> ${game.addedBy?.username || 'Unknown'}</span>
+                </div>
+                <p class="game-detail-description">${game.description}</p>
+                <div class="game-detail-actions">
+                    <button class="btn btn-primary" onclick="moveToCollection('${game._id}')">📚 Move to Collection</button>
+                    <button class="btn btn-secondary" onclick="removeFromWishlist('${game._id}')">❌ Remove from Wishlist</button>
+                </div>
+            </div>
+        `;
+
+        const newClose = detailContent.querySelector('#gameDetailClose');
+        if (newClose) {
+            newClose.addEventListener('click', closeDetail);
+        }
+
+        detailOverlay.style.display = 'flex';
+        detailContent.classList.add('open');
+    }
+
     loadWishlist();
     
     async function loadWishlist() {
@@ -64,38 +128,51 @@ if (document.getElementById('wishlistGrid')) {
     function createWishlistCard(game) {
         const card = document.createElement('div');
         card.className = 'game-card';
-        
+
+        const developer = game.developer || 'Unknown developer';
+
+        // Match the Netflix-style card structure used in the All Games section
         card.innerHTML = `
-            <div class="game-card-header">
-                <div class="game-card-platform">${game.platform}</div>
-                <h3 class="game-card-title-overlay">${game.title}</h3>
-            </div>
-            ${game.posterUrl ? `
             <div class="game-card-poster">
-                <img src="${game.posterUrl}" alt="${game.title} poster" class="game-poster-image" loading="lazy" />
-            </div>` : ''}
+                ${game.posterUrl ? `
+                    <img src="${game.posterUrl}" alt="${game.title} poster" class="game-poster-image" loading="lazy" />
+                ` : ''}
+                <div class="game-card-gradient"></div>
+                <div class="game-card-header">
+                    <h3 class="game-card-title-overlay">${game.title}</h3>
+                </div>
+            </div>
             <div class="game-card-body">
+                <div class="game-card-meta">
+                    <span class="game-card-developer">${developer}</span>
+                    <div class="game-card-rating">
+                        <span class="rating-stars">${generateStars(game.rating)}</span>
+                        <span class="rating-value">${game.rating.toFixed(1)}</span>
+                    </div>
+                </div>
                 <div class="game-card-meta">
                     <span>🎮 ${game.genre}</span>
                     <span>📅 ${game.year}</span>
                 </div>
-                <div class="game-card-rating">
-                    <span class="rating-stars">${generateStars(game.rating)}</span>
-                    <span class="rating-value">${game.rating.toFixed(1)}</span>
-                </div>
-                <p class="game-card-description">${game.description}</p>
-                ${game.developer ? `<p style="font-size: 0.875rem; color: var(--text-muted);">Developer: ${game.developer}</p>` : ''}
                 <div class="game-card-actions">
-                    <button class="btn btn-icon" onclick="moveToCollection('${game._id}')">
+                    <button class="btn-icon" onclick="moveToCollection('${game._id}')">
                         📚 Move to Collection
                     </button>
-                    <button class="btn btn-icon btn-delete" onclick="removeFromWishlist('${game._id}')">
+                    <button class="btn-icon btn-delete" onclick="removeFromWishlist('${game._id}')">
                         ❌ Remove from Wishlist
                     </button>
                 </div>
             </div>
         `;
-        
+
+        // Open detailed view when clicking the card, but ignore action buttons
+        card.addEventListener('click', (event) => {
+            if (event.target.closest('.btn-icon')) {
+                return;
+            }
+            openGameDetail(game);
+        });
+
         return card;
     }
 }
