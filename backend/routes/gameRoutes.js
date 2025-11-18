@@ -4,7 +4,7 @@ const express = require('express');
 // This file defines the API endpoints. It's like a table of contents for our API.
 // It maps a URL and HTTP method (like GET or POST) to a specific controller function.
 
-// Import the controller functions we just created.
+// Import the controller functions
 const {
     getAllUserGames,
     getGameById,
