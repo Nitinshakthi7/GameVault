@@ -695,3 +695,53 @@
         width: 100%;
     }
 }
+
+
+/* Placeholder art when a game has no poster */
+.poster-placeholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    background:
+        radial-gradient(circle at 30% 20%, hsla(var(--hue), 85%, 60%, 0.45), transparent 60%),
+        radial-gradient(circle at 80% 90%, hsla(calc(var(--hue) + 60), 80%, 50%, 0.35), transparent 55%),
+        linear-gradient(160deg, hsl(var(--hue), 45%, 16%), hsl(calc(var(--hue) + 30), 50%, 8%));
+    overflow: hidden;
+}
+
+.poster-placeholder::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(
+        135deg, rgba(255, 255, 255, 0.04) 0 2px, transparent 2px 14px
+    );
+}
+
+.poster-placeholder-initials {
+    font-family: var(--font-heading);
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    color: hsla(var(--hue), 90%, 85%, 0.9);
+    text-shadow: 0 0 30px hsla(var(--hue), 90%, 60%, 0.6);
+    position: relative;
+    z-index: 1;
+}
+
+.poster-placeholder-genre {
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.55);
+    position: relative;
+    z-index: 1;
+    margin-bottom: 2.5rem; /* keep clear of the title overlay */
+}
+
+.game-detail-poster .poster-placeholder { position: absolute; }
+.game-detail-poster { min-height: 320px; }

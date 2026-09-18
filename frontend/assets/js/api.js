@@ -198,3 +198,25 @@ const API = {
         });
     }
 };
+
+
+// Placeholder art for games without a poster: initials on a genre-tinted gradient
+const GENRE_HUES = {
+    RPG: 275, FPS: 0, Strategy: 200, Racing: 25, Adventure: 150, Sports: 110,
+    Puzzle: 185, Simulation: 225, Horror: 330, Fighting: 350, Action: 40
+};
+
+function posterPlaceholder(game) {
+    const hue = GENRE_HUES[game.genre] ?? 260;
+    const initials = (game.title || '?')
+        .split(/[\s:\-]+/)
+        .filter(Boolean)
+        .slice(0, 2)
+        .map((w) => w[0].toUpperCase())
+        .join('');
+    return `
+        <div class="poster-placeholder" style="--hue:${hue}" aria-hidden="true">
+            <span class="poster-placeholder-initials">${initials}</span>
+            <span class="poster-placeholder-genre">${game.genre || ''}</span>
+        </div>`;
+}

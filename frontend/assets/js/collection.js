@@ -38,7 +38,7 @@ if (document.getElementById('collectionGrid')) {
         detailContent.innerHTML = `
             <button class="game-detail-close" id="gameDetailClose">&times;</button>
             <div class="game-detail-poster">
-                ${posterUrl ? `<img src="${posterUrl}" alt="${game.title} poster" />` : ''}
+                ${posterUrl ? `<img src="${posterUrl}" alt="${game.title} poster" />` : posterPlaceholder(game)}
             </div>
             <div class="game-detail-info">
                 <h2 class="game-detail-title">${game.title}</h2>
@@ -145,7 +145,7 @@ if (document.getElementById('collectionGrid')) {
             <div class="game-card-poster">
                 ${game.posterUrl ? `
                     <img src="${game.posterUrl}" alt="${game.title} poster" class="game-poster-image" loading="lazy" />
-                ` : ''}
+                ` : posterPlaceholder(game)}
                 <div class="game-card-gradient"></div>
                 <div class="game-card-header">
                     <h3 class="game-card-title-overlay">${game.title}</h3>
