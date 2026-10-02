@@ -1,16 +1,10 @@
-// Simple request logger middleware
-// Logs all incoming HTTP requests to the console
-
-const loggerMiddleware = (req, res, next) => {
-    // Get current timestamp
-    const timestamp = new Date().toISOString();
-    
-    // Log request method, URL, and timestamp
-    console.log(`[${timestamp}] ${req.method} ${req.url}`);
-    
-    // Continue to next middleware
+// Logs method, path, status and duration only - never request bodies or auth headers.
+module.exports = (req, res, next) => {
+    if (process.env.NODE_ENV === 'test') return next();
+    const start = Date.now();
+    res.on('finish', () => {
+        const path = req.originalUrl.split('?')[0];
+        console.log(`${new Date().toISOString()} ${req.method} ${path} ${res.statusCode} ${Date.now() - start}ms`);
+    });
     next();
 };
-
-// Export logger middleware
-module.exports = loggerMiddleware;

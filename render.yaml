@@ -1,0 +1,27 @@
+# Render blueprint: one web service serves the API and the built React app (single origin, no CORS needed).
+# Database: MongoDB Atlas free tier (M0). Create a cluster, allow network access, and paste its URI below in the Render dashboard.
+services:
+  - type: web
+    name: gamevault
+    runtime: node
+    plan: free
+    buildCommand: npm ci --prefix backend && npm ci --include=dev --prefix frontend && npm run build --prefix frontend
+    startCommand: npm start --prefix backend
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: SERVE_FRONTEND
+        value: "true"
+      - key: GAME_PROVIDER
+        value: rawg
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: RAWG_API_KEY
+        sync: false
+      - key: APP_URL
+        sync: false   # e.g. https://gamevault.onrender.com

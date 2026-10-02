@@ -1,108 +1,19 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="GameVault - Manage your game library, ratings, and wishlist">
-    <title>GameVault - Your Personal Game Library</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./assets/css/main.css">
-</head>
-<body>
-    <!-- Navigation Bar -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-logo">
-                <span class="logo-icon">🎮</span>
-                <span class="logo-text">GameVault</span>
-            </div>
-            <div class="nav-links" id="navLinks">
-                <a href="./view-games.html" class="nav-link">Browse Games</a>
-                <a href="./login.html" class="nav-link">Login</a>
-                <a href="./register.html" class="nav-link nav-link-cta">Get Started</a>
-            </div>
-            <button class="nav-toggle" id="navToggle">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <main>
-        <section class="hero">
-            <div class="hero-bg-animation"></div>
-            <div class="hero-content">
-                <h1 class="hero-title">
-                    Welcome to <span class="text-gradient">GameVault</span>
-                </h1>
-                <p class="hero-subtitle">
-                    Your ultimate game library manager. Track, rate, and organize your gaming collection in one secure place.
-                </p>
-                <div class="hero-buttons">
-                    <a href="./register.html" class="btn btn-primary">Start Your Collection</a>
-                    <a href="./view-games.html" class="btn btn-secondary">Browse Games</a>
-                </div>
-            </div>
-        </section>
-
-        <!-- Features Section -->
-        <section class="features">
-            <div class="container">
-                <h2 class="section-title">Why Choose GameVault?</h2>
-                <div class="features-grid">
-                    <div class="feature-card">
-                        <div class="feature-icon">📚</div>
-                        <h3 class="feature-title">Manage Your Library</h3>
-                        <p class="feature-description">Keep track of all your games across multiple platforms in one organized space.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">⭐</div>
-                        <h3 class="feature-title">Rate & Review</h3>
-                        <p class="feature-description">Share your thoughts and rate games from 0 to 5 stars.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">🎯</div>
-                        <h3 class="feature-title">Wishlist</h3>
-                        <p class="feature-description">Create a wishlist of games you want to play and never forget a title.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">🔍</div>
-                        <h3 class="feature-title">Smart Filters</h3>
-                        <p class="feature-description">Filter by platform, genre, rating, and more to find exactly what you need.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- CTA Section -->
-        <section class="cta-section">
-            <div class="container">
-                <div class="cta-content">
-                    <h2 class="cta-title">Ready to Level Up Your Game Library?</h2>
-                    <p class="cta-subtitle">Join GameVault today and start organizing your gaming experience.</p>
-                    <a href="./register.html" class="btn btn-primary btn-large">Create Free Account</a>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-brand">
-                    <span class="logo-icon">🎮</span>
-                    <span class="logo-text">GameVault</span>
-                </div>
-                <p class="footer-text">© 2025 GameVault. Built for gamers, by gamers.</p>
-            </div>
-        </div>
-    </footer>
-
-    <script src="./assets/js/ui.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0a0e27" />
+    <meta name="description" content="GameVault - track your game library, backlog, wishlist and playtime in one place." />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230a0e27'/%3E%3Cpath d='M14 26h36a6 6 0 0 1 6 6l-2 12a6 6 0 0 1-10 3l-4-5H24l-4 5a6 6 0 0 1-10-3l-2-12a6 6 0 0 1 6-6z' fill='%23b249f8'/%3E%3Ccircle cx='44' cy='34' r='3' fill='%2300f5ff'/%3E%3C/svg%3E" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <title>GameVault</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>GameVault needs JavaScript to run.</noscript>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
 </html>

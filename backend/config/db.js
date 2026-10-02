@@ -1,19 +1,10 @@
-// Database configuration file
-// This file can be used for additional database settings in the future
-
 const mongoose = require('mongoose');
 
-// Function to connect to MongoDB
-const connectDB = async () => {
-    try {
-        // Connect to MongoDB using connection string from .env
-        const conn = await mongoose.connect(process.env.MONGODB_URI);
-        
-        console.log(`MongoDB Connected: ${conn.connection.host}`);
-    } catch (error) {
-        console.error(`Error: ${error.message}`);
-        process.exit(1); // Exit process with failure
-    }
-};
+// NOTE: all user input is validated with zod into primitives before it reaches a query,
+// so operator injection ({"$gt": ""}) is rejected at the validation layer.
+async function connectDB(uri = process.env.MONGODB_URI) {
+    await mongoose.connect(uri);
+    if (process.env.NODE_ENV !== 'test') console.log('Connected to MongoDB');
+}
 
 module.exports = connectDB;

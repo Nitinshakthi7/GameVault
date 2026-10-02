@@ -1,0 +1,66 @@
+[
+  {
+    "externalId": "m-cyberpunk-2077", "slug": "cyberpunk-2077", "title": "Cyberpunk 2077",
+    "description": "An open-world action-adventure story set in Night City, a megalopolis obsessed with power, glamour and body modification. You play as V, a mercenary outlaw going after a one-of-a-kind implant that is the key to immortality.",
+    "releaseDate": "2020-12-10", "developers": ["CD PROJEKT RED"], "publishers": ["CD PROJEKT RED"],
+    "genres": ["Action", "RPG"], "tags": ["Open World", "Cyberpunk", "Story Rich", "Futuristic", "FPS"],
+    "platforms": ["PC", "PlayStation 5", "PlayStation 4", "Xbox Series S/X", "Xbox One"],
+    "franchises": ["Cyberpunk"], "externalRating": 4.1, "metacritic": 86, "website": "https://www.cyberpunk.net"
+  },
+  {
+    "externalId": "m-witcher-3", "slug": "the-witcher-3-wild-hunt", "title": "The Witcher 3: Wild Hunt",
+    "description": "As war rages on throughout the Northern Realms, you take on the greatest contract of your life: tracking down the Child of Prophecy, a living weapon that can alter the shape of the world.",
+    "releaseDate": "2015-05-18", "developers": ["CD PROJEKT RED"], "publishers": ["CD PROJEKT RED"],
+    "genres": ["Action", "RPG"], "tags": ["Open World", "Fantasy", "Story Rich", "Choices Matter"],
+    "platforms": ["PC", "PlayStation 4", "Xbox One", "Nintendo Switch"],
+    "franchises": ["The Witcher"], "externalRating": 4.66, "metacritic": 92, "website": "https://www.thewitcher.com"
+  },
+  {
+    "externalId": "m-rdr2", "slug": "red-dead-redemption-2", "title": "Red Dead Redemption 2",
+    "description": "America, 1899. The end of the Wild West era has begun. After a robbery goes badly wrong, Arthur Morgan and the Van der Linde gang are forced to flee.",
+    "releaseDate": "2018-10-26", "developers": ["Rockstar Games"], "publishers": ["Rockstar Games"],
+    "genres": ["Action", "Adventure"], "tags": ["Open World", "Western", "Story Rich", "Atmospheric"],
+    "platforms": ["PC", "PlayStation 4", "Xbox One"],
+    "franchises": ["Red Dead"], "externalRating": 4.59, "metacritic": 97, "website": "https://www.rockstargames.com/reddeadredemption2"
+  },
+  {
+    "externalId": "m-hades", "slug": "hades", "title": "Hades",
+    "description": "Defy the god of the dead as you hack and slash out of the Underworld in this rogue-like dungeon crawler from the creators of Bastion and Transistor.",
+    "releaseDate": "2020-09-17", "developers": ["Supergiant Games"], "publishers": ["Supergiant Games"],
+    "genres": ["Action", "Indie", "RPG"], "tags": ["Roguelike", "Mythology", "Great Soundtrack", "Isometric"],
+    "platforms": ["PC", "PlayStation 5", "Xbox Series S/X", "Nintendo Switch", "macOS"],
+    "franchises": ["Hades"], "externalRating": 4.38, "metacritic": 93, "website": "https://www.supergiantgames.com/games/hades"
+  },
+  {
+    "externalId": "m-celeste", "slug": "celeste", "title": "Celeste",
+    "description": "Help Madeline survive her inner demons on her journey to the top of Celeste Mountain in this super-tight, hand-crafted platformer.",
+    "releaseDate": "2018-01-25", "developers": ["Maddy Makes Games"], "publishers": ["Maddy Makes Games"],
+    "genres": ["Platformer", "Indie"], "tags": ["Difficult", "Pixel Graphics", "Emotional", "Precision Platformer"],
+    "platforms": ["PC", "PlayStation 4", "Xbox One", "Nintendo Switch", "macOS"],
+    "franchises": [], "externalRating": 4.37, "metacritic": 92, "website": "https://www.celestegame.com"
+  },
+  {
+    "externalId": "m-forza-horizon-5", "slug": "forza-horizon-5", "title": "Forza Horizon 5",
+    "description": "Your Ultimate Horizon Adventure awaits! Explore the vibrant open world landscapes of Mexico with limitless, fun driving action in the world's greatest cars.",
+    "releaseDate": "2021-11-09", "developers": ["Playground Games"], "publishers": ["Xbox Game Studios"],
+    "genres": ["Racing"], "tags": ["Open World", "Driving", "Multiplayer", "Great Graphics"],
+    "platforms": ["PC", "Xbox Series S/X", "Xbox One", "PlayStation 5"],
+    "franchises": ["Forza"], "externalRating": 4.28, "metacritic": 92, "website": "https://forza.net"
+  },
+  {
+    "externalId": "m-elden-ring", "slug": "elden-ring", "title": "Elden Ring",
+    "description": "Rise, Tarnished, and be guided by grace to brandish the power of the Elden Ring and become an Elden Lord in the Lands Between.",
+    "releaseDate": "2022-02-25", "developers": ["FromSoftware"], "publishers": ["Bandai Namco Entertainment"],
+    "genres": ["Action", "RPG"], "tags": ["Open World", "Souls-like", "Difficult", "Dark Fantasy"],
+    "platforms": ["PC", "PlayStation 5", "PlayStation 4", "Xbox Series S/X", "Xbox One"],
+    "franchises": ["Elden Ring"], "externalRating": 4.4, "metacritic": 96, "website": "https://en.bandainamcoent.eu/elden-ring/elden-ring"
+  },
+  {
+    "externalId": "m-stardew-valley", "slug": "stardew-valley", "title": "Stardew Valley",
+    "description": "You've inherited your grandfather's old farm plot in Stardew Valley. Armed with hand-me-down tools and a few coins, you set out to begin your new life.",
+    "releaseDate": "2016-02-26", "developers": ["ConcernedApe"], "publishers": ["ConcernedApe"],
+    "genres": ["Simulation", "RPG", "Indie"], "tags": ["Farming", "Relaxing", "Pixel Graphics", "Co-op"],
+    "platforms": ["PC", "PlayStation 4", "Xbox One", "Nintendo Switch", "iOS", "Android"],
+    "franchises": [], "externalRating": 4.41, "metacritic": 89, "website": "https://www.stardewvalley.net"
+  }
+]

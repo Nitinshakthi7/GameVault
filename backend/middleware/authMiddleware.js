@@ -1,54 +1,23 @@
-// Import required packages
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const AppError = require('../utils/AppError');
+const { asyncHandler } = require('../utils/helpers');
 
-// Middleware to protect routes - checks if user has valid JWT token
-const protect = async (req, res, next) => {
-    let token;
-    
+const protect = asyncHandler(async (req, res, next) => {
+    const header = req.headers.authorization || '';
+    if (!header.startsWith('Bearer ')) throw AppError.unauthorized('Not authorized, no token provided');
+    let decoded;
     try {
-        // Check if Authorization header exists and starts with 'Bearer'
-        if (
-            req.headers.authorization &&
-            req.headers.authorization.startsWith('Bearer')
-        ) {
-            // Extract token from header (format: "Bearer TOKEN")
-            token = req.headers.authorization.split(' ')[1];
-            
-            // Verify token using JWT secret
-            const decoded = jwt.verify(token, process.env.JWT_SECRET);
-            
-            // Find user by ID from token payload (exclude password)
-            req.user = await User.findById(decoded.id).select('-password');
-            
-            // If user not found
-            if (!req.user) {
-                return res.status(401).json({
-                    success: false,
-                    message: 'User not found'
-                });
-            }
-            
-            // User is authenticated, proceed to next middleware/route
-            next();
-            
-        } else {
-            // No token provided
-            return res.status(401).json({
-                success: false,
-                message: 'Not authorized, no token provided'
-            });
-        }
-    } catch (error) {
-        console.error('Auth Middleware Error:', error.message);
-        
-        // Token is invalid or expired
-        return res.status(401).json({
-            success: false,
-            message: 'Not authorized, token failed'
-        });
+        decoded = jwt.verify(header.split(' ')[1], process.env.JWT_SECRET);
+    } catch (e) {
+        throw AppError.unauthorized('Session expired. Please log in again.');
     }
-};
+    const user = await User.findById(decoded.id).select('-password');
+    if (!user || (decoded.tv ?? 0) !== user.tokenVersion) {
+        throw AppError.unauthorized('Session expired. Please log in again.');
+    }
+    req.user = user;
+    next();
+});
 
-// Export middleware
 module.exports = { protect };

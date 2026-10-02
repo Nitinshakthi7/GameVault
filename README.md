@@ -1,342 +1,95 @@
 # GameVault
 
-GameVault is a simple full-stack web app that lets users manage a personal game library with **authentication**, **MongoDB-backed storage**, and a **modern static frontend**. Users can:
+A personal gaming library, backlog and analytics platform. Search any game, add it to your library with one click (metadata is fetched automatically), track your status, play sessions and ratings, and see how your gaming life adds up.
 
-- Register and log in using email and password.
-- Add games (with optional poster images) to a shared library.
-- Filter games by platform, genre, and top rating.
-- Maintain a personal **collection** (owned games) and **wishlist**.
-- Interact with the same API using **Postman**, including adding many games at once.
+> GameVault v2 implements the Phase 0 MVP of [`docs/GameVault_PRD.md`](docs/GameVault_PRD.md).
 
----
+## Features
 
-## 1. Project Structure
+- **Auth** – register, login, logout, log out everywhere, password reset, JWT with server-side session invalidation.
+- **Game search** – RAWG-backed search with automatic metadata (title, description, developers, publishers, genres, platforms, release date, artwork). No manual entry.
+- **Library** – one-click add, 8 statuses (owned, backlog, playing, completed, dropped, on hold, replay, mastered), personal rating, progress, notes and review, purchase info.
+- **Filtering and sorting** – platform, genre, developer, publisher, franchise, release year, status, rating, playtime, completion, ownership type; 7 sort orders; pagination.
+- **Wishlist** – priority, target price, notes; move to library in one click.
+- **Play sessions** – log sessions, edit/delete history, playtime recalculated automatically.
+- **Dashboard and analytics** – overview cards, continue playing, backlog snapshot, recent activity, top genres/platforms/developers/franchises.
+- **UI** – dark gaming look, three.js backdrop, anime.js and Framer Motion animations, responsive, keyboard accessible, `prefers-reduced-motion` respected.
 
-- `backend/` – Node.js + Express API with MongoDB (Mongoose) and JWT auth.
-- `frontend/` – Static HTML/CSS/JS website that talks to the backend API.
-- `postman/GameVault.postman_collection.json` – Postman collection with all API requests.
+## Architecture
 
-The API base URL (from the frontend and Postman examples) assumes the backend runs on:
-
-```text
-http://localhost:5000/api
+```
+React (Vite) SPA  ->  REST API (Express)  ->  Services  ->  MongoDB
+                                               |
+                                  Provider layer: RAWG | mock
+                                  provider -> normalize.js -> Game collection (+ search cache)
 ```
 
----
+| Collection | Purpose |
+| --- | --- |
+| `Game` | One global record per game (metadata from the provider) |
+| `UserGame` | A user's relationship with a game: status, rating, playtime, notes |
+| `Wishlist` | A user's wishlist entries |
+| `PlaySession` | Individual play sessions |
+| `SearchCache` | 24h cache of provider searches (TTL index) |
 
-## 2. How to Run This Project Locally
+Stack: Node 20+, Express 4, Mongoose 8, zod, JWT/bcrypt, helmet, express-rate-limit; React 18, Vite, three.js, anime.js, Framer Motion.
 
-### 2.1. Prerequisites
+## Local setup
 
-- **Node.js** (LTS version is fine)
-- **npm** (comes with Node)
-- **MongoDB** running locally or in the cloud (e.g. MongoDB Atlas)
-
-### 2.2. Clone the repository
+Prerequisites: Node 20+, a MongoDB URI (local or Atlas), optionally a free [RAWG API key](https://rawg.io/apidocs).
 
 ```bash
-git clone <your-github-url-here>
-cd GameVault
+# API
+cd backend
+cp .env.example .env     # then edit MONGODB_URI, JWT_SECRET, RAWG_API_KEY
+npm install
+npm run dev              # http://localhost:5000
+
+# Web app (second terminal)
+cd frontend
+npm install
+npm run dev              # http://localhost:5173 (proxies /api to :5000)
 ```
 
-> Replace `<your-github-url-here>` with your actual GitHub HTTPS URL.
+No key or database yet? `npm run dev:memory` in `backend/` starts the API on a throwaway in-memory database with the offline mock provider (Cyberpunk 2077, The Witcher 3, Hades, ...).
 
-### 2.3. Backend setup (Express + MongoDB)
+### Environment variables (`backend/.env`)
 
-1. Go into the backend folder and install dependencies:
-   ```bash
-   cd backend
-   npm install
-   ```
+| Variable | Description |
+| --- | --- |
+| `MONGODB_URI` | MongoDB connection string (use a fresh DB name such as `gamevault_v2`) |
+| `JWT_SECRET` | Long random string (`node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"`) |
+| `JWT_EXPIRES_IN` | Token lifetime, default `7d` |
+| `GAME_PROVIDER` | `rawg` or `mock`. Defaults to `rawg` when `RAWG_API_KEY` is set, otherwise `mock` |
+| `RAWG_API_KEY` | RAWG key; the UI shows the required "Data from RAWG" attribution |
+| `CORS_ORIGINS` | Comma-separated allowed origins for split local dev |
+| `APP_URL` | Base URL used in password reset links |
+| `SERVE_FRONTEND` | `true` to serve `frontend/dist` from Express (production) |
 
-2. Create a `.env` file inside `backend/` with the following variables:
-   ```env
-   PORT=5000
-   MONGODB_URI=mongodb://localhost:27017/gamevault
-   JWT_SECRET=some_super_secret_key
-   JWT_EXPIRES_IN=7d
-   NODE_ENV=development
-   ```
+Password reset emails are not sent yet: outside production the reset link is returned by the API and printed in the server log.
 
-   - `MONGODB_URI` can be any valid MongoDB connection string.
-   - `JWT_SECRET` can be any random string; it is used to sign tokens.
+## Scripts
 
-3. Start the backend server in development mode (with auto-restart):
-   ```bash
-   cd backend
-   npm run dev
-   ```
+| Where | Command | What |
+| --- | --- | --- |
+| `backend` | `npm test` | Unit/integration tests (in-memory MongoDB, mock provider) |
+| `backend` | `npm run smoke` | End-to-end flow against a running server: `BASE_URL=http://localhost:5000 npm run smoke` |
+| `backend` | `npm run dev:memory` | API on an in-memory DB |
+| `frontend` | `npm run build` | Production build into `frontend/dist` |
 
-   Or in normal mode:
-   ```bash
-   npm start
-   ```
+## API
 
-The API will be available at `http://localhost:5000`.
+Full reference with request/response shapes, error codes and rate limits: [`docs/API.md`](docs/API.md).
 
-### 2.4. Frontend setup
+## Deploy (Render + MongoDB Atlas)
 
-The frontend is a static site (no build step).
+1. Create a free MongoDB Atlas M0 cluster and a database user; allow network access from Render.
+2. Push this repo to GitHub and create a Render Blueprint from [`render.yaml`](render.yaml).
+3. Set `MONGODB_URI`, `RAWG_API_KEY` and `APP_URL` in the Render dashboard (`JWT_SECRET` is generated).
+4. Verify: `BASE_URL=https://<your-app>.onrender.com npm run smoke --prefix backend`.
 
-1. From the repo root, open `frontend/index.html` or `frontend/view-games.html` in a browser **after** the backend is running.
-2. For a smoother experience, serve the `frontend` folder using any simple static server (for example `live-server`, VS Code Live Server, or `npx serve frontend`).
+Render's free tier sleeps when idle, so the first request after a pause can take about 50 seconds.
 
-The frontend JavaScript uses `http://localhost:5000/api` as the API base URL and will communicate with the backend you started.
+## Roadmap
 
----
-
-## 3. API Overview (for Postman)
-
-All API endpoints are under the base URL:
-
-```text
-http://localhost:5000/api
-```
-
-Most routes require a **JWT token** in the `Authorization` header:
-
-```http
-Authorization: Bearer <your_token_here>
-```
-
-Only **register** and **login** are public.
-
-You can import the full Postman collection from:
-
-- `postman/GameVault.postman_collection.json`
-
-Below is a summary of all important endpoints and example request bodies so you can also create your own Postman requests easily.
-
-### 3.1. Authentication
-
-#### 3.1.1. Register
-
-- **Method:** `POST`
-- **URL:** `/api/auth/register`
-- **Body (JSON):**
-  ```json
-  {
-    "username": "player1",
-    "email": "player1@example.com",
-    "password": "secret123"
-  }
-  ```
-- **Auth:** Not required.
-
-#### 3.1.2. Login
-
-- **Method:** `POST`
-- **URL:** `/api/auth/login`
-- **Body (JSON):**
-  ```json
-  {
-    "email": "player1@example.com",
-    "password": "secret123"
-  }
-  ```
-- **Response:** contains `token` and basic user info. Copy this `token` and use it in the `Authorization: Bearer <token>` header for the routes below.
-
----
-
-### 3.2. Game CRUD
-
-All game routes below **require a valid JWT**.
-
-#### 3.2.1. Add a single game
-
-- **Method:** `POST`
-- **URL:** `/api/games`
-- **Headers:**
-  - `Authorization: Bearer <token>`
-  - `Content-Type: application/json`
-- **Body (JSON):**
-  ```json
-  {
-    "title": "The Witcher 3",
-    "platform": "PC",
-    "genre": "RPG",
-    "year": 2015,
-    "rating": 4.8,
-    "description": "Story-driven open world RPG.",
-    "developer": "CD Projekt Red",
-    "publisher": "CD Projekt",
-    "posterUrl": "https://example.com/posters/witcher3.jpg"
-  }
-  ```
-
-> `posterUrl` is **optional** – if you leave it out, the game will not show a poster image.
-
-#### 3.2.2. Add multiple games at once (bulk insert)
-
-- **Method:** `POST`
-- **URL:** `/api/games/bulk`
-- **Headers:**
-  - `Authorization: Bearer <token>`
-  - `Content-Type: application/json`
-- **Body (JSON):**
-  ```json
-  {
-    "games": [
-      {
-        "title": "Forza Horizon 5",
-        "platform": "Xbox",
-        "genre": "Racing",
-        "year": 2021,
-        "rating": 4.7,
-        "description": "Open-world racing in Mexico.",
-        "developer": "Playground Games",
-        "publisher": "Xbox Game Studios",
-        "posterUrl": "https://example.com/posters/forza5.jpg"
-      },
-      {
-        "title": "God of War Ragnarök",
-        "platform": "PlayStation",
-        "genre": "Action",
-        "year": 2022,
-        "rating": 4.9,
-        "description": "Mythological action adventure.",
-        "developer": "Santa Monica Studio",
-        "publisher": "Sony",
-        "posterUrl": "https://example.com/posters/gowr.jpg"
-      }
-    ]
-  }
-  ```
-
-All games in the `games` array must have: `title`, `platform`, `genre`, `year`, `rating`, and `description`. If any entry is invalid, the whole request will return an error.
-
-#### 3.2.3. Get all games
-
-- **Method:** `GET`
-- **URL:** `/api/games`
-- **Headers:** `Authorization: Bearer <token>`
-
-Returns all games (newest first) with `addedBy.username` populated.
-
-#### 3.2.4. Get a single game by ID
-
-- **Method:** `GET`
-- **URL:** `/api/games/:id`
-- **Example:** `/api/games/64f0c9b4a1234567890abcd1`
-- **Headers:** `Authorization: Bearer <token>`
-
-#### 3.2.5. Update a game
-
-- **Method:** `PUT`
-- **URL:** `/api/games/:id`
-- **Headers:**
-  - `Authorization: Bearer <token>`
-  - `Content-Type: application/json`
-- **Body (JSON, any subset of fields):**
-  ```json
-  {
-    "title": "The Witcher 3: Complete Edition",
-    "rating": 4.9,
-    "posterUrl": "https://example.com/posters/witcher3-complete.jpg"
-  }
-  ```
-
-#### 3.2.6. Delete a game
-
-- **Method:** `DELETE`
-- **URL:** `/api/games/:id`
-- **Headers:** `Authorization: Bearer <token>`
-
-Also removes the game from all users’ collections and wishlists.
-
----
-
-### 3.3. Game Filters & Queries
-
-All filter routes require `Authorization: Bearer <token>`.
-
-#### 3.3.1. Get games by platform
-
-- **Method:** `GET`
-- **URL:** `/api/games/platform/:platform`
-- **Examples:**
-  - `/api/games/platform/PC`
-  - `/api/games/platform/PlayStation`
-
-#### 3.3.2. Get games by genre
-
-- **Method:** `GET`
-- **URL:** `/api/games/genre/:genre`
-- **Examples:**
-  - `/api/games/genre/RPG`
-  - `/api/games/genre/FPS`
-
-#### 3.3.3. Get top-rated games
-
-- **Method:** `GET`
-- **URL:** `/api/games/top-rated`
-
-Returns games with `rating >= 4.5`, sorted by rating and recency.
-
----
-
-### 3.4. User Collection (Owned Games)
-
-These endpoints manage the games in the **current logged-in user’s collection**.
-
-#### 3.4.1. Get my collection
-
-- **Method:** `GET`
-- **URL:** `/api/games/user/collection`
-- **Headers:** `Authorization: Bearer <token>`
-
-Returns the user with `ownedGames` populated.
-
-#### 3.4.2. Add a game to my collection
-
-- **Method:** `POST`
-- **URL:** `/api/games/user/collection`
-- **Headers:**
-  - `Authorization: Bearer <token>`
-  - `Content-Type: application/json`
-- **Body (JSON):**
-  ```json
-  {
-    "gameId": "<some_game_id>"
-  }
-  ```
-
-#### 3.4.3. Remove a game from my collection
-
-- **Method:** `DELETE`
-- **URL:** `/api/games/user/collection/:gameId`
-- **Headers:** `Authorization: Bearer <token>`
-
----
-
-### 3.5. User Wishlist
-
-These endpoints manage the games in the **current logged-in user’s wishlist**.
-
-#### 3.5.1. Get my wishlist
-
-- **Method:** `GET`
-- **URL:** `/api/games/user/wishlist`
-- **Headers:** `Authorization: Bearer <token>`
-
-#### 3.5.2. Add a game to my wishlist
-
-- **Method:** `POST`
-- **URL:** `/api/games/user/wishlist`
-- **Headers:**
-  - `Authorization: Bearer <token>`
-  - `Content-Type: application/json`
-- **Body (JSON):**
-  ```json
-  {
-    "gameId": "<some_game_id>"
-  }
-  ```
-
-#### 3.5.3. Remove a game from my wishlist
-
-- **Method:** `DELETE`
-- **URL:** `/api/games/user/wishlist/:gameId`
-- **Headers:** `Authorization: Bearer <token>`
-
----
+Phases 1-8 of the PRD (wishlist price tracking, recommendations, natural-language search, integrations, ...) are tracked in `docs/GameVault_PRD.md`.
